@@ -77,3 +77,9 @@ def get_train_val_pair(data, train_ratio=0.85, scale=True):
     if scale:
         x_train, y_train, x_val, y_val = x_train / 255.0, y_train / 255.0, x_val / 255.0, y_val / 255.0
     return (x_train, y_train), (x_val, y_val)
+
+def measure_nonorthogonality(X):
+    # Normalize columns
+    X = X / np.linalg.norm(X, axis=0)
+    X_inner = X.T @ X
+    return (np.abs(X_inner - np.diag(X_inner.diagonal()))).sum() / (X_inner.shape[0]**2 - X_inner.shape[0])
